@@ -120,18 +120,18 @@ int main() {
 
 	Pm::ShaderProgram shaderProgram("vertexShaderSource.vert","fragmentShaderSource.frag");
 
-	float timeValue = glfwGetTime();
-	float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+	//float timeValue = glfwGetTime();
+	//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+	//
+	//if (glGetUniformLocation(shaderProgram.getProgram(), "ourColor") < 0)
+	//	std::cout << "failed to find uniform!\n";
+	//
+	//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
+	//glUseProgram(shaderProgram.getProgram());
+	//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-	if (glGetUniformLocation(shaderProgram.getProgram(), "ourColor") < 0)
-		std::cout << "failed to find uniform!\n";
 
-	int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
-	glUseProgram(shaderProgram.getProgram());
-	glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-
-
-	Pm::Triangle test(Pm::Vec3(-0.3,-0.3,0),Pm::Vec3(0,0.3,0),Pm::Vec3(0.3,-0.3,0));
+	Pm::Triangle test(Pm::Vec3(-0.3f,-0.3f,0),Pm::Vec3(0,0.3f,0),Pm::Vec3(0.3f,-0.3f,0),Pm::Vec3(0,1.0f,0),Pm::Vec3(0,0,1.0f),Pm::Vec3(1.0f,0,0));
 
 
 	while (!glfwWindowShouldClose(window))
@@ -146,10 +146,10 @@ int main() {
 		glUseProgram(shaderProgram.getProgram());
 		///<>test.setPosition(test.getLeft(), test.getTop(), test.getRight());
 
-		float timeValue = glfwGetTime();
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-		int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
-		glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		//float timeValue = glfwGetTime();
+		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
+		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		test.draw();
 

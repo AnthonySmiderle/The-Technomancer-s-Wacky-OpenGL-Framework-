@@ -8,8 +8,8 @@ namespace Pm {
 	public:
 		VBO_VBA(const unsigned _VBO, const unsigned _VAO);
 	protected:
-		void bindBuffer();
-		void bindVertPointer();
+		virtual void bindBuffer();
+		virtual void bindVertPointer();
 		unsigned VBO, VAO;
 	};
 
@@ -17,7 +17,10 @@ namespace Pm {
 	public:
 
 		Triangle(const unsigned _VBO = 0, const unsigned _VAO = 0);
-		Triangle(const Vec3& lefMost, const Vec3& top, const Vec3& rightMost, const unsigned _VBO = 0, const unsigned _VAO = 0);
+
+		///<HEARD YOU LIKE STUFF THAT ISN'T HARD CODED>
+		///<WE GOT YOU COVERED BABY>
+		Triangle(const Vec3& lefMost, const Vec3& top, const Vec3& rightMost,const Vec3& leftmostColour, const Vec3& TopColour, const Vec3& rightmostColour,const unsigned _VBO = 0, const unsigned _VAO = 0);
 		void setPosition(const Vec3& leftMost, const Vec3&top, const Vec3 rightMost);
 		void draw();
 		static int triangles;
@@ -26,6 +29,7 @@ namespace Pm {
 		Vec3 getTop() const { return top; }
 		Vec3 getRight() const { return right; }
 	private:
+		void bindVertPointer() override;
 		Vec3 left, top, right;
 	};
 }
