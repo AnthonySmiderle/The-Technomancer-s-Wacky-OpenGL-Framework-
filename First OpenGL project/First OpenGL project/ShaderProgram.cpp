@@ -6,7 +6,7 @@ namespace Pm {
 
 	
 
-	ShaderProgram::ShaderProgram(std::string VERTSHADERSOURCE, std::string FRAGSHADERSOURCE)
+	Shader::Shader(std::string VERTSHADERSOURCE, std::string FRAGSHADERSOURCE)
 	{
 		vertexShader = glCreateShader(GL_VERTEX_SHADER);
 		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -17,7 +17,7 @@ namespace Pm {
 		createProgram();
 	}
 	
-	void ShaderProgram::createProgram()
+	void Shader::createProgram()
 	{
 		//make a fucking string i guess
 		std::string shaderSource = " ";
@@ -69,7 +69,7 @@ namespace Pm {
 
 	}
 
-	void ShaderProgram::compileShader(unsigned shader, const char* shaderSource)
+	void Shader::compileShader(unsigned shader, const char* shaderSource)
 	{
 		//point opengl to the shader's source, then compile that shader
 		glShaderSource(shader, 1, &shaderSource, NULL);

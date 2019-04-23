@@ -4,11 +4,11 @@
 #include <string>
 namespace Pm {
 
-	class ShaderProgram {
+	class Shader {
 	public:
 		//default constructor is all that you need to call
 		
-		ShaderProgram(std::string VERTSHADERSOURCE,std::string FRAGSHADERSOURCE);
+		Shader(std::string VERTSHADERSOURCE,std::string FRAGSHADERSOURCE);
 		
 		//get the program 
 		unsigned getProgram() const { return shaderProgram; }
