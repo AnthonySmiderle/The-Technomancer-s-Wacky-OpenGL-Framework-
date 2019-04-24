@@ -30,6 +30,12 @@
     <ClCompile Include="ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image_implimentation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShaderSource.frag">
@@ -50,6 +56,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="IO.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

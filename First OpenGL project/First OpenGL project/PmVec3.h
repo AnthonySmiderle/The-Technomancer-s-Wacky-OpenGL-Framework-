@@ -8,4 +8,12 @@ namespace Pm {
 		void operator-=(const Vec3& v);
 		float x, y, z;
 	};
+	class Vec2 {
+		Vec2(float X, float Y) {
+			x = X;
+			y = Y;
+		}
+
+		float x, y;
+	};
 }

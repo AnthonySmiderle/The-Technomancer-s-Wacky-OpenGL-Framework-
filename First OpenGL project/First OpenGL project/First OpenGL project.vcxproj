@@ -121,6 +121,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image_implimentation.cpp" />
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PmVec3.cpp" />
@@ -132,6 +134,8 @@
     <None Include="vertexShaderSource.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image.h" />
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.h" />
     <ClInclude Include="IO.h" />
     <ClInclude Include="PmVec3.h" />
     <ClInclude Include="ShaderProgram.h" />
