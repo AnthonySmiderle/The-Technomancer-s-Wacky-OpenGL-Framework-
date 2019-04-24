@@ -49,7 +49,7 @@ int main() {
 
 
 	Pm::Triangle test(Pm::Vec3(-0.3f,-0.3f,0),Pm::Vec3(0,0.3f,0),Pm::Vec3(0.3f,-0.3f,0),Pm::Vec3(0,1.0f,0),Pm::Vec3(0,0,1.0f),Pm::Vec3(1.0f,0,0));
-
+	Pm::Triangle test2;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -58,6 +58,7 @@ int main() {
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
 
 		// draw our first triangle
 		glUseProgram(shaderProgram.getProgram());
@@ -68,7 +69,7 @@ int main() {
 		//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-		test.draw();
+		test2.draw(1);
 
 
 		glfwSwapBuffers(window);

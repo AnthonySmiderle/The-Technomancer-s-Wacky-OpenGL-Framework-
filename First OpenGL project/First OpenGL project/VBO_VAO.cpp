@@ -12,6 +12,7 @@ namespace Pm {
 		//generate those buffers and vertex arrays
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
 	}
 
 	void VBO_VBA::bindBuffer()
@@ -19,6 +20,7 @@ namespace Pm {
 		//bind the vertex array and the buffer to the context
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	}
 
 	void VBO_VBA::bindVertPointer()
@@ -38,24 +40,32 @@ namespace Pm {
 	}
 
 	int Triangle::triangles = 0;
-	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO)
-		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0)
+	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO,Texture TEXTURERECT)
+		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0),textureRect(TEXTURERECT)
 	{
 		triangles++;
+		///<i dunno if this is a triangle anymore chief>
 		float vertices[] = {
-			-0.5f, -0.5f, 0.0f, // left  
-			 0.5f, -0.5f, 0.0f, // right 
-			 0.0f,  0.5f, 0.0f  // top   
+			// positions          // colors           // texture coords
+			 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // top right
+			 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // bottom right
+			-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+			-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
+		};
+		unsigned int indices[] = {
+		0, 1, 3, // first triangle
+		1, 2, 3  // second triangle
 		};
 		bindBuffer();
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-		bindVertPointer();
+		bindVertPointer(1);
 	}
 
 
 	Triangle::Triangle(const Vec3 & leftMost, const Vec3 & Top, const Vec3 & rightMost, const Vec3& leftmostColour, const Vec3& TopColour, const Vec3& rightmostColour, const unsigned _VBO, const unsigned _VAO)
-		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost)
+		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost),textureRect("container.jpg")
 	{
 
 		triangles++;
@@ -89,6 +99,26 @@ namespace Pm {
 
 	}
 
+
+	///<use this function when you want to have a fucking triangle with a texture in it>
+	void Triangle::bindVertPointer(int dummy)
+	{
+		//point the attrivute pointer in the right direction based on the size of our vector of floats
+		//this will determine how many spaces in memory opengl should leave inbetween checkinf for data
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+		///<here goes some multicoloured shit, its 6* the size of a float now cause there are 6 entries into our "2d" array>
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+		//dear god more shit, gotta change everything to 8* now
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		glEnableVertexAttribArray(2);
+
+		
+	}
+
 	void Triangle::bindVertPointer()
 	{
 		//point the attrivute pointer in the right direction based on the size of our vector of floats
@@ -107,12 +137,27 @@ namespace Pm {
 		// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 		glBindVertexArray(0);
 	}
+	void Triangle::bindBuffer1()
+	{
+		//bind the vertex array and the buffer to the context
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
+		glBindTexture(GL_TEXTURE_2D, textureRect.getTextureId());
+		glBindVertexArray(VAO);
+
+	}
 
 	void Triangle::draw()
 	{
 		//rebind the vert array and draw the triangle again
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+	}
+	void Triangle::draw(int dummy) {
+		glBindVertexArray(VAO);
+		glBindTexture(GL_TEXTURE_2D, textureRect.getTextureId());
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 	}
 }

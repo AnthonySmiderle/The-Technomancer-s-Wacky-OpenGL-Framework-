@@ -5,8 +5,9 @@ namespace Pm {
 	class Texture {
 	public:
 		Texture(std::string PATH);
-
+		unsigned getTextureId() const { return texture; }
 	private:
 		std::string path;
+		unsigned texture;
 	};
 }

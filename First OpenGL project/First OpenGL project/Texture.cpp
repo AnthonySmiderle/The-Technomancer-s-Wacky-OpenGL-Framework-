@@ -10,7 +10,6 @@ namespace Pm {
 		
 
 		///<if it wasn't obvious, a lot of this code isn't mine, but this entire section is ACTUALLY copy and pasted to shit so...not like other sections aren't but yeah>
-		unsigned texture;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 
