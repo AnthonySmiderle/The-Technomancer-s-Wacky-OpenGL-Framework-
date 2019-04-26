@@ -48,15 +48,9 @@ int main() {
 	//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
 	//glUseProgram(shaderProgram.getProgram());
 	//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-	glm::mat4 trans = glm::mat4(1.0f);
-	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-
-	unsigned int transformLoc = glGetUniformLocation(shaderProgram.getId(), "transform");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+	
 
 	Pm::Triangle test2;
-	glUniform1i(glGetUniformLocation(shaderProgram.getId(), "texture1"), 0); // set it manually
 
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
