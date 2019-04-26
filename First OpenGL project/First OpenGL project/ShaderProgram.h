@@ -11,7 +11,7 @@ namespace Pm {
 		Shader(std::string VERTSHADERSOURCE,std::string FRAGSHADERSOURCE);
 		
 		//get the program 
-		unsigned getProgram() const { return shaderProgram; }
+		unsigned getId() const { return shaderProgram; }
 	private:
 		//compiles the shader that you pass in
 		void compileShader(unsigned shader, const char* tempString);

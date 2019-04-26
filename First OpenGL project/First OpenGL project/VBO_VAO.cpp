@@ -1,6 +1,7 @@
 #include "VBO_VAO.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 namespace Pm {
 
 	//todo
@@ -40,8 +41,8 @@ namespace Pm {
 	}
 
 	int Triangle::triangles = 0;
-	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO,Texture TEXTURERECT)
-		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0),textureRect(TEXTURERECT)
+	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO,Texture TEXTURERECT,Texture TEXTURERECT2)
+		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0),textureRect(TEXTURERECT),textureRect2(TEXTURERECT2)
 	{
 		triangles++;
 		///<i dunno if this is a triangle anymore chief>
@@ -65,7 +66,7 @@ namespace Pm {
 
 
 	Triangle::Triangle(const Vec3 & leftMost, const Vec3 & Top, const Vec3 & rightMost, const Vec3& leftmostColour, const Vec3& TopColour, const Vec3& rightmostColour, const unsigned _VBO, const unsigned _VAO)
-		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost),textureRect("container.jpg")
+		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost),textureRect("container.jpg"),textureRect2("gottem.png")
 	{
 
 		triangles++;
@@ -139,6 +140,9 @@ namespace Pm {
 	}
 	void Triangle::bindBuffer1()
 	{
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		//bind the vertex array and the buffer to the context
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -155,8 +159,8 @@ namespace Pm {
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 	void Triangle::draw(int dummy) {
+
 		glBindVertexArray(VAO);
-		glBindTexture(GL_TEXTURE_2D, textureRect.getTextureId());
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	}

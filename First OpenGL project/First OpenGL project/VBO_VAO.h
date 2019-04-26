@@ -18,7 +18,7 @@ namespace Pm {
 	class Triangle : public VBO_VBA {
 	public:
 
-		Triangle(const unsigned _VBO = 0, const unsigned _VAO = 0,Texture TEXTURERECT = Texture("container.jpg"));
+		Triangle(const unsigned _VBO = 0, const unsigned _VAO = 0,Texture TEXTURERECT = Texture("container.jpg"),Texture TEXTURERECT2 = Texture("gottem.PNG"));
 
 		///<HEARD YOU LIKE STUFF THAT ISN'T HARD CODED>
 		///<WE GOT YOU COVERED BABY>
@@ -33,6 +33,7 @@ namespace Pm {
 		Vec3 getTop() const { return top; }
 		Vec3 getRight() const { return right; }
 		Texture textureRect;
+		Texture textureRect2;
 	private:
 		//may break shit
 		void bindBuffer1();

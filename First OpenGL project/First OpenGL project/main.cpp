@@ -3,7 +3,9 @@
 #include "VBO_VAO.h"
 #include <iostream>
 #include "ShaderProgram.h"
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -35,7 +37,7 @@ int main() {
 		return -1;
 	}
 
-	Pm::Shader shaderProgram("vertexShaderSource.vert","fragmentShaderSource.frag");
+	Pm::Shader shaderProgram("vertexShaderSource.vert", "fragmentShaderSource.frag");
 
 	//float timeValue = glfwGetTime();
 	//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
@@ -46,11 +48,18 @@ int main() {
 	//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");
 	//glUseProgram(shaderProgram.getProgram());
 	//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+	trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 
+	unsigned int transformLoc = glGetUniformLocation(shaderProgram.getId(), "transform");
+	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
-	Pm::Triangle test(Pm::Vec3(-0.3f,-0.3f,0),Pm::Vec3(0,0.3f,0),Pm::Vec3(0.3f,-0.3f,0),Pm::Vec3(0,1.0f,0),Pm::Vec3(0,0,1.0f),Pm::Vec3(1.0f,0,0));
 	Pm::Triangle test2;
+	glUniform1i(glGetUniformLocation(shaderProgram.getId(), "texture1"), 0); // set it manually
 
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -59,11 +68,24 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, test2.textureRect.getTextureId());
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, test2.textureRect2.getTextureId());
 		// draw our first triangle
-		glUseProgram(shaderProgram.getProgram());
-		///<>test.setPosition(test.getLeft(), test.getTop(), test.getRight());
+		 // create transformations
+		glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+		transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+		transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
+		glm::mat4 trans = glm::mat4(1.0f);
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		glUseProgram(shaderProgram.getId());
+		
+		///<>test.setPosition(test.getLeft(), test.getTop(), test.getRight());
+		unsigned int transformLoc = glGetUniformLocation(shaderProgram.getId(), "transform");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 		//float timeValue = glfwGetTime();
 		//float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
 		//int vertexColorLocation = glGetUniformLocation(shaderProgram.getProgram(), "ourColor");

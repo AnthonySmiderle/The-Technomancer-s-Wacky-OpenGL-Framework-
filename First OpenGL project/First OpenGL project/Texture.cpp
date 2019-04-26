@@ -7,7 +7,7 @@ namespace Pm {
 	Texture::Texture(std::string PATH)
 	{
 		path = PATH;
-		
+
 
 		///<if it wasn't obvious, a lot of this code isn't mine, but this entire section is ACTUALLY copy and pasted to shit so...not like other sections aren't but yeah>
 		glGenTextures(1, &texture);
@@ -24,14 +24,14 @@ namespace Pm {
 		int width;
 		int height;
 		int nrChannels;
-		auto data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+		auto data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
 		if (data) {
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glTexImage2D(GL_TEXTURE_2D, 0, (path == "container.jpg") ? GL_RGB : GL_RGBA, width, height, 0, (path == "container.jpg") ? GL_RGB : GL_RGBA, GL_UNSIGNED_BYTE, data);
 			glGenerateMipmap(GL_TEXTURE_2D);
 		}
-		else {
+		else
 			std::cout << "Failed to load texture" << std::endl;
-		}
+
 		stbi_image_free(data);
 
 	}
