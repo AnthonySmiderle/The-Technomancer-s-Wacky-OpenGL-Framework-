@@ -130,12 +130,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image_implimentation.cpp" />
-    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PmVec3.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />
+    <ClCompile Include="stb_image_implimentation.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VBO_VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
