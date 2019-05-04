@@ -46,7 +46,7 @@ namespace Pm {
 		cameraFront = glm::normalize(front);
 
 		cameraRight = glm::normalize(glm::cross(cameraFront, cameraUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-		cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
+		//cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 	}
 
 
