@@ -82,24 +82,12 @@ int main() {
 
 		glUseProgram(shaderProgram.getId());
 
-		glm::mat4 view;
-		view = defaultCamera.whereAreWeLooking();
 
-		glm::mat4 model = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-		glm::mat4 projection = glm::mat4(1.0f);
-		//model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
-		projection = glm::perspective(glm::radians(45.0f), (float)800.f / (float)600.0f, 0.1f, 100.0f);
-		// retrieve the matrix uniform locations
-		unsigned int modelLoc = glGetUniformLocation(shaderProgram.getId(), "model");
-		unsigned int viewLoc = glGetUniformLocation(shaderProgram.getId(), "view");
-		// pass them to the shaders (3 different ways)
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
-		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getId(), "projection"), 1, GL_FALSE, &projection[0][0]);
+		shaderProgram.loadModel();
+		shaderProgram.loadViewMatrix(defaultCamera);
+		shaderProgram.loadProjectionMatrix(800.0f, 600.0f);
 
 
-		//	model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
 		test2.draw(1);
 
 		glfwSwapBuffers(window);

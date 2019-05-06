@@ -4,6 +4,8 @@
 #include <string>
 namespace Pm {
 
+	class Camera;
+
 	class Shader {
 	public:
 		//default constructor is all that you need to call
@@ -12,6 +14,13 @@ namespace Pm {
 		
 		//get the program 
 		unsigned getId() const { return shaderProgram; }
+
+		
+		//not sure if i should be making these functions but we're gonna try it anyways
+
+		void loadModel();
+		void loadViewMatrix(Camera defaultCamera);
+		void loadProjectionMatrix(float width,float height);
 	private:
 		//compiles the shader that you pass in
 		void compileShader(unsigned shader, const char* tempString);

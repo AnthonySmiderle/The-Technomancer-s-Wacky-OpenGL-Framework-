@@ -1,7 +1,10 @@
 #include "ShaderProgram.h"
 #include "IO.h"
 #include <stdio.h>
-
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include "Camera.h"
 namespace Pm {
 
 	
@@ -66,6 +69,30 @@ namespace Pm {
 		//delete the memory allocated to the gpu by the sahders so we dont get memory leaks
 		glDeleteShader(vertexShader);
 		glDeleteShader(fragmentShader);
+
+	}
+
+	void Shader::loadModel()
+	{
+		glm::mat4 model = glm::mat4(1.0f); 
+		unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+	}
+
+	void Shader::loadViewMatrix(Camera defaultCamera)
+	{
+		glm::mat4 view;
+		view = defaultCamera.whereAreWeLooking();
+
+		unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view[0][0]);
+	}
+
+	void Shader::loadProjectionMatrix(float width, float height)
+	{
+		glm::mat4 projection = glm::mat4(1.0f);
+		projection = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 0.1f, 100.0f);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, &projection[0][0]);
 
 	}
 
