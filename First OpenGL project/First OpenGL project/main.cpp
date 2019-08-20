@@ -73,12 +73,15 @@ int main() {
 	Pm::Cube lightCube(2);
 
 	glEnable(GL_DEPTH_TEST);
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
 		dt = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-
+		
+		
+		//std::cout << "dt: " << dt << "\n";
 		processInput(window);
 
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -86,12 +89,6 @@ int main() {
 
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_2D, test2.textureRect.getTextureId());
-
-		//glUseProgram(lightingShader.getId());
-		
-		
-		
-		//lightCube.draw();
 
 		glUseProgram(lightingShader.getId());
 
