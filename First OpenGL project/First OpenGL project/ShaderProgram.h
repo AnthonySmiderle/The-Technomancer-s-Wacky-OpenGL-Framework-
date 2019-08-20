@@ -19,7 +19,7 @@ namespace Pm {
 		//not sure if i should be making these functions but we're gonna try it anyways
 
 		void loadModel();
-		void loadViewMatrix(Camera defaultCamera);
+		void loadViewMatrix(Camera& defaultCamera);
 		void loadProjectionMatrix(float width,float height);
 	private:
 		//compiles the shader that you pass in

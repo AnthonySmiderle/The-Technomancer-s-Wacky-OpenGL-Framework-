@@ -91,13 +91,13 @@ namespace Pm {
 	}
 
 	int Triangle::triangles = 0;
-	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO,Texture TEXTURERECT,Texture TEXTURERECT2)
-		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0),textureRect(TEXTURERECT),textureRect2(TEXTURERECT2)
+	Triangle::Triangle(const unsigned _VBO, const unsigned _VAO, Texture TEXTURERECT, Texture TEXTURERECT2)
+		:VBO_VBA(_VBO, _VAO), left(0, 0, 0), top(0, 0, 0), right(0, 0, 0), textureRect(TEXTURERECT), textureRect2(TEXTURERECT2)
 	{
 		triangles++;
 		///<i dunno if this is a triangle anymore chief>
-		
-		
+
+
 		bindBuffer();
 
 		bindVertPointer(1);
@@ -105,7 +105,7 @@ namespace Pm {
 
 
 	Triangle::Triangle(const Vec3 & leftMost, const Vec3 & Top, const Vec3 & rightMost, const Vec3& leftmostColour, const Vec3& TopColour, const Vec3& rightmostColour, const unsigned _VBO, const unsigned _VAO)
-		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost),textureRect("container.jpg"),textureRect2("gottem.png")
+		:VBO_VBA(_VBO, _VAO), left(leftMost), top(Top), right(rightMost), textureRect("container.jpg"), textureRect2("gottem.png")
 	{
 
 		triangles++;
@@ -126,18 +126,18 @@ namespace Pm {
 	}
 
 	//this doesnt work but its neat
-	void Triangle::setPosition(const Vec3 & leftMost, const Vec3 & Top, const Vec3 rightMost)
-	{
-		float vertices[] = {
-			leftMost.x, leftMost.y, 0.0f, // left  
-			 rightMost.x, rightMost.y, 0.0f, // right 
-			 Top.x,  Top.y, 0.0f  // top   
-		};
-		bindBuffer();
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		bindVertPointer();
-
-	}
+	//void Triangle::setPosition(const Vec3 & leftMost, const Vec3 & Top, const Vec3 rightMost)
+	//{
+	//	float vertices[] = {
+	//		leftMost.x, leftMost.y, 0.0f, // left  
+	//		 rightMost.x, rightMost.y, 0.0f, // right 
+	//		 Top.x,  Top.y, 0.0f  // top   
+	//	};
+	//	bindBuffer();
+	//	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//	bindVertPointer();
+	//
+	//}
 
 
 	///<use this function when you want to have a fucking triangle with a texture in it>
@@ -152,9 +152,9 @@ namespace Pm {
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 		glEnableVertexAttribArray(1);
 
-		
 
-		
+
+
 	}
 
 	void Triangle::bindVertPointer()

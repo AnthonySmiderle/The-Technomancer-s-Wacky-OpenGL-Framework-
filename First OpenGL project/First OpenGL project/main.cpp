@@ -1,19 +1,18 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include "VBO_VAO.h"
 #include <iostream>
 #include "ShaderProgram.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Camera.h"
+#include "Cube.h"
+#include <vector>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 
 float lastX = 400, lastY = 300;
 float yaw = -90.0f;
@@ -35,7 +34,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Sound Panel", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800 *  2,600 * 2, "Whats a William", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << "\n";
@@ -61,8 +60,13 @@ int main() {
 
 	Pm::Shader shaderProgram("vertexShaderSource.vert", "fragmentShaderSource.frag");
 
-	Pm::Triangle test2;
+	//Pm::Cube test;
+	//Pm::Cube test2(1);
 
+	std::vector<Pm::Cube> cubes;
+
+	for (int i = 0; i < 41; i++)
+		cubes.push_back(Pm::Cube(i));
 
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
@@ -76,8 +80,8 @@ int main() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, test2.textureRect.getTextureId());
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_2D, test2.textureRect.getTextureId());
 
 
 		glUseProgram(shaderProgram.getId());
@@ -85,10 +89,11 @@ int main() {
 
 		shaderProgram.loadModel();
 		shaderProgram.loadViewMatrix(defaultCamera);
-		shaderProgram.loadProjectionMatrix(800.0f, 600.0f);
+		shaderProgram.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 
 
-		test2.draw(1);
+		for (auto x : cubes)
+			x.draw();
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
@@ -105,7 +110,7 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	defaultCamera.move(window,2.5f*dt);
+	defaultCamera.move(window, 2.5f*dt);
 }
 void mouse_callback(GLFWwindow * window, double xpos, double ypos)
 {

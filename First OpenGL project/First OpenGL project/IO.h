@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-///<this code is brought to you by the curtosy of Emillian>
+///<this code is brought to you by the curtosy of Emilian>
 //loads the file as a string
 bool loadFileAsString(const std::string & file, std::string& output)
 {

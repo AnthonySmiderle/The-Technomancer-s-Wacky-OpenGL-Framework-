@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShaderSource.frag">
@@ -68,6 +71,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Camera.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Cube.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

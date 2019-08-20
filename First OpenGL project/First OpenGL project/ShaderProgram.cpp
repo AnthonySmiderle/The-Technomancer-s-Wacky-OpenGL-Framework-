@@ -79,7 +79,7 @@ namespace Pm {
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	}
 
-	void Shader::loadViewMatrix(Camera defaultCamera)
+	void Shader::loadViewMatrix(Camera& defaultCamera)
 	{
 		glm::mat4 view;
 		view = defaultCamera.whereAreWeLooking();

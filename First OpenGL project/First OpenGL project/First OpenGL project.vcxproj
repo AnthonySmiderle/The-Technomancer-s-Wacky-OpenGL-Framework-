@@ -127,6 +127,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Camera.cpp" />
+    <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Cube.cpp" />
     <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image_implimentation.cpp" />
     <ClCompile Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.cpp" />
     <ClCompile Include="glad.c" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Camera.h" />
+    <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Cube.h" />
     <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\stb_image.h" />
     <ClInclude Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\Texture.h" />
     <ClInclude Include="IO.h" />
