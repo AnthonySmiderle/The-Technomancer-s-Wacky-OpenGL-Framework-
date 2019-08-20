@@ -24,7 +24,7 @@ float dt = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
 Pm::Camera defaultCamera;
-
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 int main() {
 
 	//initialize glfw
@@ -59,14 +59,18 @@ int main() {
 
 
 	Pm::Shader shaderProgram("vertexShaderSource.vert", "fragmentShaderSource.frag");
-
+	Pm::Shader lightingShader("lightingShader.vert", "lightingShader.frag");
+	Pm::Shader lampShader("lightingShader.vert", "lampShader.frag");
+	
 	//Pm::Cube test;
 	//Pm::Cube test2(1);
 
 	std::vector<Pm::Cube> cubes;
 
-	for (int i = 0; i < 41; i++)
+	for (int i = 0; i < 1; i++)
 		cubes.push_back(Pm::Cube(i));
+
+	Pm::Cube lightCube(2);
 
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
@@ -83,17 +87,29 @@ int main() {
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_2D, test2.textureRect.getTextureId());
 
+		//glUseProgram(lightingShader.getId());
+		
+		
+		
+		//lightCube.draw();
 
-		glUseProgram(shaderProgram.getId());
+		glUseProgram(lightingShader.getId());
 
-
-		shaderProgram.loadModel();
-		shaderProgram.loadViewMatrix(defaultCamera);
-		shaderProgram.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
-
-
+		lightingShader.loadModel();
+		lightingShader.loadViewMatrix(defaultCamera);
+		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
+		lightingShader.setVec3("objectColor", glm::vec3(1.0f, 0, 1.0f));
+		lightingShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
 		for (auto x : cubes)
 			x.draw();
+
+		glUseProgram(lampShader.getId());
+		lampShader.loadModel();
+		lampShader.loadViewMatrix(defaultCamera);
+		lampShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
+
+		lightCube.draw();
+
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

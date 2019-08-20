@@ -112,4 +112,8 @@ namespace Pm {
 		}
 	}
 
+	void Shader::setVec3(const std::string& name, const glm::vec3&value) const {
+		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &value[0]);
+	}
+
 }
