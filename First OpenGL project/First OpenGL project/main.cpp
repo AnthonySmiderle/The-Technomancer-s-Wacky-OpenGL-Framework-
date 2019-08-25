@@ -34,7 +34,7 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 
-	GLFWwindow* window = glfwCreateWindow(800 *  2,600 * 2, "Whats a William", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800 * 2, 600 * 2, "Optics simulation", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << "\n";
@@ -61,30 +61,32 @@ int main() {
 	Pm::Shader shaderProgram("vertexShaderSource.vert", "fragmentShaderSource.frag");
 	Pm::Shader lightingShader("lightingShader.vert", "lightingShader.frag");
 	Pm::Shader lampShader("lightingShader.vert", "lampShader.frag");
-	
+
 	//Pm::Cube test;
 	//Pm::Cube test2(1);
 
 	std::vector<Pm::Cube> cubes;
 
 	for (int i = 0; i < 1; i++)
-		cubes.push_back(Pm::Cube(i));
+		cubes.push_back(Pm::Cube(i, true));
 
-	Pm::Cube lightCube(2);
+	Pm::Cube lightCube(0);
 
 	glEnable(GL_DEPTH_TEST);
-
+	auto lightPos = glm::vec3(0.0f, 0.0f, 0.0f);
+	float rotate = 1;
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
 		dt = currentFrame - lastFrame;
 		lastFrame = currentFrame;
-		
-		
+
+
 		//std::cout << "dt: " << dt << "\n";
 		processInput(window);
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		//background colour
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//glActiveTexture(GL_TEXTURE0);
@@ -92,16 +94,51 @@ int main() {
 
 		glUseProgram(lightingShader.getId());
 
-		lightingShader.loadModel();
+		rotate += dt;
+		lightingShader.loadModel(false, false, true, glm::vec3(0, 0, 0), 0, glm::vec3(0, -1, 0), rotate);
 		lightingShader.loadViewMatrix(defaultCamera);
 		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
-		lightingShader.setVec3("objectColor", glm::vec3(1.0f, 0, 1.0f));
+		lightingShader.setVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
+		lightingShader.setVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
+		lightingShader.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		lightingShader.setFloat("material.shininess", 32.0f);
+
+
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 0.7f);
+		lightColor.z = sin(glfwGetTime() * 2.3f);
+
+		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
+		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
+
+		lightingShader.setVec3("light.ambient", ambientColor);
+		lightingShader.setVec3("light.diffuse", diffuseColor);
+		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 		lightingShader.setVec3("lightColor", glm::vec3(1.0f, 1.0f, 1.0f));
+
+		auto lightPos = glm::vec3(sin(glfwGetTime()), 0.0f, cos(glfwGetTime()));
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			lightPos.x += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			lightPos.x -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+			lightPos.z -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+			lightPos.z += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+			lightPos.y += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+			lightPos.y -= 0.05f;
+		lightingShader.setVec3("lightPos", lightPos);
+
+		lightingShader.setVec3("viewPos", defaultCamera.getPosition());
+
 		for (auto x : cubes)
 			x.draw();
 
 		glUseProgram(lampShader.getId());
-		lampShader.loadModel();
+		lampShader.loadModel(true, true, false, lightPos, 0.2f);
 		lampShader.loadViewMatrix(defaultCamera);
 		lampShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 

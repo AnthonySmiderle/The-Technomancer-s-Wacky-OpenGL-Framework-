@@ -50,6 +50,9 @@
     <None Include="vertexShaderSource.vert">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\lightingShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VBO_VAO.h">

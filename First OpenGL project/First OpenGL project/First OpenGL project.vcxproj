@@ -137,6 +137,7 @@
     <ClCompile Include="VBO_VAO.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\..\The Technomancer%27s Wacky OpenGL Framework!\First OpenGL project\First OpenGL project\lightingShader.frag" />
     <None Include="fragmentShaderSource.frag" />
     <None Include="vertexShaderSource.vert" />
   </ItemGroup>

@@ -13,6 +13,7 @@ namespace Pm {
 		void doMouseMovement(float xoffset,float yoffset);
 		void move(GLFWwindow* window,float movementSpeed);
 
+		glm::vec3& getPosition() { return cameraPos; }
 	private:
 		void update();
 

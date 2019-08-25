@@ -15,11 +15,13 @@ namespace Pm {
 
 		//get the program 
 		unsigned getId() const { return shaderProgram; }
+		void setVec3(const std::string&name, const float x, const float y, const float z) const;
 		void setVec3(const std::string &name, const glm::vec3 &value) const;
+		void setFloat(const std::string &name, const float& value) const;
 
 		//not sure if i should be making these functions but we're gonna try it anyways
 
-		void loadModel();
+		void loadModel(bool transform = false,bool scale = false, bool rotate = false,const glm::vec3& translatiom = glm::vec3(0, 0, 0),float scaleBy = 0.0f,const glm::vec3& rotateBy = glm::vec3(0,0,0),float rotationAngle = 0.0f);
 		void loadViewMatrix(Camera& defaultCamera);
 		void loadProjectionMatrix(float width, float height);
 	private:

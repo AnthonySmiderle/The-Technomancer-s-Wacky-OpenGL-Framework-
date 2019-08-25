@@ -7,7 +7,7 @@ namespace Pm {
 	class Cube {
 	public:
 
-		Cube(unsigned disposition = 0, Texture TEXTURERECT = Texture("container.jpg"));
+		Cube(unsigned disposition = 0,bool irregularVertData = false, Texture TEXTURERECT = Texture("container.jpg"));
 
 		void draw();
 	private:
@@ -19,5 +19,6 @@ namespace Pm {
 		//static bool VAOExist;
 		unsigned VAO;
 		unsigned VBO, EBO;
+		bool irregularVertData;
 	};
 }
