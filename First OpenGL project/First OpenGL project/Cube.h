@@ -1,17 +1,18 @@
 #pragma once
 #include "Texture.h"
 #include "PmVec3.h"
-
+#include <vector>
 namespace Pm {
 
 	class Cube {
 	public:
 
-		Cube(unsigned disposition = 0,bool irregularVertData = false, Texture TEXTURERECT = Texture("container.jpg"));
+		Cube(float* verts, const unsigned sizeOfArray, Texture* TEXTURERECT,bool irregularVertData = false );
 
 		void draw();
+		Texture getTexture() const { return textureRect; }
 	private:
-		void bindBuffers(unsigned disposition);
+		void bindBuffers(float * verts,const unsigned sizeOfArray);
 		void bindVertPointers();
 
 		Texture textureRect;

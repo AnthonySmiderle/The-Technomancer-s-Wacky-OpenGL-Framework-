@@ -18,6 +18,7 @@ namespace Pm {
 		void setVec3(const std::string&name, const float x, const float y, const float z) const;
 		void setVec3(const std::string &name, const glm::vec3 &value) const;
 		void setFloat(const std::string &name, const float& value) const;
+		void setInt(const std::string& name, const int& value)const;
 
 		//not sure if i should be making these functions but we're gonna try it anyways
 

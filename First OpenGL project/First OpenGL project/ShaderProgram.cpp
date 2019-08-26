@@ -129,5 +129,7 @@ namespace Pm {
 	void Shader::setFloat(const std::string& name, const float& value) const {
 		glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()),value);
 	}
-
+	void Shader::setInt(const std::string& name, const int& value) const {
+		glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
+	}
 }
