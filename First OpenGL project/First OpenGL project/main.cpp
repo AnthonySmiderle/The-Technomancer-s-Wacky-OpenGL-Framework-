@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Cube.h"
 #include <vector>
+#include <time.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -26,7 +27,7 @@ float lastFrame = 0.0f; // Time of last frame
 Pm::Camera defaultCamera;
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 int main() {
-
+	srand(time(0));
 	//initialize glfw
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -52,50 +53,6 @@ int main() {
 		std::cout << "Failed to initialize GLAD" << "\n";
 		return -1;
 	}
-	//light cube
-	float vertices[] = {
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 0.0f  ,
-		 0.5f  , -0.5f  , -0.5f  ,  1.0f  , 0.0f  ,
-		 0.5f  ,  0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		 0.5f  ,  0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		-0.5f  ,  0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 0.0f  ,
-
-		-0.5f  , -0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-		 0.5f  , -0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 1.0f  ,
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 1.0f  ,
-		-0.5f  ,  0.5f  ,  0.5f  ,  0.0f  , 1.0f  ,
-		-0.5f  , -0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-
-		-0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		-0.5f  ,  0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		-0.5f  , -0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-		-0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		 0.5f  ,  0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		 0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		 0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		 0.5f  , -0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		 0.5f  , -0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		 0.5f  , -0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		 0.5f  , -0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		-0.5f  , -0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-		-0.5f  , -0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-
-		-0.5f  ,  0.5f  , -0.5f  ,  0.0f  , 1.0f  ,
-		 0.5f  ,  0.5f  , -0.5f  ,  1.0f  , 1.0f  ,
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		 0.5f  ,  0.5f  ,  0.5f  ,  1.0f  , 0.0f  ,
-		-0.5f  ,  0.5f  ,  0.5f  ,  0.0f  , 0.0f  ,
-		-0.5f  ,  0.5f  , -0.5f  ,  0.0f  , 1.0f
-	};
 
 	//centre cube
 	float vertices2[] = {
@@ -149,12 +106,20 @@ int main() {
 
 	//Pm::Cube test; 
 	//Pm::Cube test2(1);
-		lightingShader.setInt("material.diffuse", 0);
+	lightingShader.setInt("material.diffuse", 0);
 
 	std::vector<Pm::Cube> cubes;
 
-	for (int i = 0; i < 1; i++)
-		cubes.push_back(Pm::Cube(vertices2, 288,new  Pm::Texture("container2.png"),true));
+	Pm::Texture specularMap("container2_specular.png");
+	for (int i = 0; i < 10; i++) {
+		cubes.push_back(Pm::Cube(vertices2, 288, new  Pm::Texture("container2.png"), true));
+		cubes.back().position = glm::vec3(i + rand()% 5, rand() % 5 + 1, i + rand() % 5);
+	}
+		///<do NOT put it in a draw function>
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, cubes.back().getTexture().load());
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, specularMap.load());
 
 	Pm::Cube lightCube(vertices2, 288, new Pm::Texture(""));
 
@@ -165,6 +130,8 @@ int main() {
 
 	glUseProgram(lightingShader.getId());
 	lightingShader.setInt("material.diffuse", 0);
+
+
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
@@ -185,18 +152,21 @@ int main() {
 		glUseProgram(lightingShader.getId());
 
 		rotate += dt;
-		lightingShader.loadModel(false, false, true, glm::vec3(0, 0, 0), 0, glm::vec3(0, -1, 0), rotate);
+
+		for (unsigned int i = 0; i < cubes.size(); i++)
+		{
+			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate*(i+1)/2 );
+			cubes.back().draw();
+		}
 		lightingShader.loadViewMatrix(defaultCamera);
 		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
-		lightingShader.setVec3("material.ambient", glm::vec3(1.0f, 0.5f, 0.31f));
-		lightingShader.setVec3("material.diffuse", glm::vec3(1.0f, 0.5f, 0.31f));
-		lightingShader.setVec3("material.specular", glm::vec3(0.5f, 0.5f, 0.5f));
+		lightingShader.setInt("material.specular", 1);
 		lightingShader.setFloat("material.shininess", 32.0f);
 
-		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime())*0;
-		lightColor.y = sin(glfwGetTime())*10;
-		lightColor.z = sin(glfwGetTime())*10;
+		glm::vec3 lightColor = glm::vec4(sin(glfwGetTime())*5, sin(glfwGetTime())*5, sin(glfwGetTime())*5, 1);
+	//	lightColor.x = 1;
+	//	lightColor.y = 1;
+	//	lightColor.z = 1;
 
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
@@ -204,6 +174,7 @@ int main() {
 		lightingShader.setVec3("light.ambient", ambientColor);
 		lightingShader.setVec3("light.diffuse", diffuseColor);
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+		lightingShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
 		//auto lightPos = glm::vec3(sin(glfwGetTime()), sin(glfwGetTime()), cos(glfwGetTime()));
 		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
@@ -222,13 +193,8 @@ int main() {
 
 		lightingShader.setVec3("viewPos", defaultCamera.getPosition());
 
-		///<put in draw function>
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubes.back().getTexture().load());
-
-
-		for (auto x : cubes)
-			x.draw();
+		//for (auto x : cubes)
+		//	x.draw();
 
 
 		/////////////////////////////////////////////////////////
@@ -236,6 +202,7 @@ int main() {
 		lampShader.loadModel(true, true, false, lightPos, 0.2f);
 		lampShader.loadViewMatrix(defaultCamera);
 		lampShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
+		lampShader.setVec4("Colour", lightColor);
 
 		lightCube.draw();
 

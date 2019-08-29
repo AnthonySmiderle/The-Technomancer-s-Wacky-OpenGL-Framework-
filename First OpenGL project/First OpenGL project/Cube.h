@@ -1,6 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include "PmVec3.h"
+#include <glm/glm.hpp>
 #include <vector>
 namespace Pm {
 
@@ -11,6 +12,7 @@ namespace Pm {
 
 		void draw();
 		Texture getTexture() const { return textureRect; }
+		glm::vec3 position;
 	private:
 		void bindBuffers(float * verts,const unsigned sizeOfArray);
 		void bindVertPointers();

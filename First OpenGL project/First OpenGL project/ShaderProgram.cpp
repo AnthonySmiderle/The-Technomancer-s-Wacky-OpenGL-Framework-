@@ -123,6 +123,11 @@ namespace Pm {
 	void Shader::setVec3(const std::string& name, const glm::vec3&value) const {
 		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &value[0]);
 	}
+	void Shader::setVec4(const std::string & name, const glm::vec3 & value) const
+	{
+		glUniform4fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &value[0]);
+
+	}
 	void Shader::setVec3(const std::string& name, const float x, const float y, const float z) const {
 		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &(glm::vec3(x,y,z))[0]);
 	}
