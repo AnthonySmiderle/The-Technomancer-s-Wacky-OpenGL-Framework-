@@ -162,8 +162,11 @@ int main() {
 		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 		lightingShader.setInt("material.specular", 1);
 		lightingShader.setFloat("material.shininess", 32.0f);
+		lightingShader.setFloat("light.constant", 1.0f);
+		lightingShader.setFloat("light.linear", 0.09f);
+		lightingShader.setFloat("light.quadratic", 0.032f);
 
-		glm::vec3 lightColor = glm::vec4(sin(glfwGetTime())*5, sin(glfwGetTime())*5, sin(glfwGetTime())*5, 1);
+		glm::vec3 lightColor = glm::vec4(2.0f,2.0f,2.0f, 1);
 	//	lightColor.x = 1;
 	//	lightColor.y = 1;
 	//	lightColor.z = 1;
