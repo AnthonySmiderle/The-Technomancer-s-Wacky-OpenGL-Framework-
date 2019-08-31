@@ -14,6 +14,7 @@ namespace Pm {
 		void move(GLFWwindow* window,float movementSpeed);
 
 		glm::vec3& getPosition() { return cameraPos; }
+		glm::vec3& getFront() { return cameraFront; }
 	private:
 		void update();
 

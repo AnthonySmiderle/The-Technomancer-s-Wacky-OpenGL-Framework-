@@ -11,7 +11,7 @@
 #include <time.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void processInput(GLFWwindow* window);
 
 
 
@@ -113,19 +113,20 @@ int main() {
 	Pm::Texture specularMap("container2_specular.png");
 	for (int i = 0; i < 10; i++) {
 		cubes.push_back(Pm::Cube(vertices2, 288, new  Pm::Texture("container2.png"), true));
-		cubes.back().position = glm::vec3(i + rand()% 5, rand() % 5 + 1, i + rand() % 5);
+		cubes.back().position = glm::vec3(i + rand() % 5, rand() % 5 + 1, i + rand() % 5);
 	}
-		///<do NOT put it in a draw function>
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, cubes.back().getTexture().load());
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, specularMap.load());
+	///<do NOT put it in a draw function>
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, cubes.back().getTexture().load());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, specularMap.load());
 
 	Pm::Cube lightCube(vertices2, 288, new Pm::Texture(""));
 
 	glEnable(GL_DEPTH_TEST);
 	auto lightPos = glm::vec3(1.0f, 0.0f, 1.0f);
 	float rotate = 1;
+
 
 
 	glUseProgram(lightingShader.getId());
@@ -155,7 +156,7 @@ int main() {
 
 		for (unsigned int i = 0; i < cubes.size(); i++)
 		{
-			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate*(i+1)/2 );
+			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate * (i + 1) / 2);
 			cubes.back().draw();
 		}
 		lightingShader.loadViewMatrix(defaultCamera);
@@ -166,36 +167,23 @@ int main() {
 		lightingShader.setFloat("light.linear", 0.09f);
 		lightingShader.setFloat("light.quadratic", 0.032f);
 
-		glm::vec3 lightColor = glm::vec4(2.0f,2.0f,2.0f, 1);
-	//	lightColor.x = 1;
-	//	lightColor.y = 1;
-	//	lightColor.z = 1;
+		lightingShader.setVec3("light.position", defaultCamera.getPosition());
+		lightingShader.setVec3("light.direction", defaultCamera.getFront());
+		lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(15.0f)));
 
+		glm::vec3 lightColor = glm::vec4(2.0f, 2.0f, 2.0f, 1);
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
 
 		lightingShader.setVec3("light.ambient", ambientColor);
 		lightingShader.setVec3("light.diffuse", diffuseColor);
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-		lightingShader.setVec3("light.direction", -0.2f, -1.0f, -0.3f);
 
-		//auto lightPos = glm::vec3(sin(glfwGetTime()), sin(glfwGetTime()), cos(glfwGetTime()));
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-			lightPos.x += 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-			lightPos.x -= 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-			lightPos.z -= 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-			lightPos.z += 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-			lightPos.y += 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-			lightPos.y -= 0.05f;
-		lightingShader.setVec3("lightPos", lightPos);
 
 		lightingShader.setVec3("viewPos", defaultCamera.getPosition());
 
+		//leave this uncommented until the above for loop is commented out or removed
 		//for (auto x : cubes)
 		//	x.draw();
 
@@ -220,14 +208,14 @@ int main() {
 	return 0;
 }
 
-void processInput(GLFWwindow *window)
+void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	defaultCamera.move(window, 2.5f*dt);
+	defaultCamera.move(window, 2.5f * dt);
 }
-void mouse_callback(GLFWwindow * window, double xpos, double ypos)
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	if (firstMouse)
 	{
