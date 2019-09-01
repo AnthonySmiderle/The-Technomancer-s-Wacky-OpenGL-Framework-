@@ -9,6 +9,7 @@
 #include "Cube.h"
 #include <vector>
 #include <time.h>
+#include "Mesh.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -53,7 +54,6 @@ int main() {
 		std::cout << "Failed to initialize GLAD" << "\n";
 		return -1;
 	}
-
 	//centre cube
 	float vertices2[] = {
 		// positions          // normals           // texture coords
@@ -113,7 +113,7 @@ int main() {
 	Pm::Texture specularMap("container2_specular.png");
 	for (int i = 0; i < 10; i++) {
 		cubes.push_back(Pm::Cube(vertices2, 288, new  Pm::Texture("container2.png"), true));
-		cubes.back().position = glm::vec3(i + rand() % 5, rand() % 5 + 1, i + rand() % 5);
+		cubes.back().position = (glm::vec3(i + rand() % 5, rand() % 5 + 1, i + rand() % 5) *= -1);
 	}
 	///<do NOT put it in a draw function>
 	glActiveTexture(GL_TEXTURE0);
@@ -121,7 +121,11 @@ int main() {
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, specularMap.load());
 
-	Pm::Cube lightCube(vertices2, 288, new Pm::Texture(""));
+	std::vector<Pm::Cube> lightCubes;
+	for (unsigned i = 0; i < 4; i++)
+		lightCubes.push_back(Pm::Cube(vertices2, 288, new Pm::Texture("")));
+
+
 
 	glEnable(GL_DEPTH_TEST);
 	auto lightPos = glm::vec3(1.0f, 0.0f, 1.0f);
@@ -132,6 +136,17 @@ int main() {
 	glUseProgram(lightingShader.getId());
 	lightingShader.setInt("material.diffuse", 0);
 
+	glm::vec3 pointLightPositions[] = {
+	glm::vec3(0.7f,  0.2f,  2.0f),
+	glm::vec3(2.3f, -3.3f, -4.0f),
+	glm::vec3(-4.0f,  2.0f, -12.0f),
+	glm::vec3(0.0f,  0.0f, -3.0f)
+	};
+
+
+	Pm::Mesh* dino = new Pm::Mesh();
+	dino->loadMesh("f16.obj");
+	
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -163,14 +178,23 @@ int main() {
 		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 		lightingShader.setInt("material.specular", 1);
 		lightingShader.setFloat("material.shininess", 32.0f);
-		lightingShader.setFloat("light.constant", 1.0f);
-		lightingShader.setFloat("light.linear", 0.09f);
-		lightingShader.setFloat("light.quadratic", 0.032f);
 
-		lightingShader.setVec3("light.position", defaultCamera.getPosition());
-		lightingShader.setVec3("light.direction", defaultCamera.getFront());
-		lightingShader.setFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-		lightingShader.setFloat("light.outerCutOff", glm::cos(glm::radians(15.0f)));
+
+		// directional light
+		lightingShader.setVec3("dirLight.direction", -0.2f, -1.0f, -0.3f);
+		lightingShader.setVec3("dirLight.ambient", 0.05f, 0.05f, 0.05f);
+		lightingShader.setVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+		lightingShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+		for (unsigned i = 0; i < 4; i++) {
+
+			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].position" , pointLightPositions[i]);
+			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].ambient"  , 0.05f, 0.05f, 0.05f   );
+			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].diffuse"  , 0.8f , 0.8f , 0.8f    );
+			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].specular" , 1.0f , 1.0f , 1.0f    );
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].constant" , 1.0f                  );
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].linear"   , 0.09                  );
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].quadratic", 0.032                 );
+		}
 
 		glm::vec3 lightColor = glm::vec4(2.0f, 2.0f, 2.0f, 1);
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
@@ -190,12 +214,15 @@ int main() {
 
 		/////////////////////////////////////////////////////////
 		glUseProgram(lampShader.getId());
-		lampShader.loadModel(true, true, false, lightPos, 0.2f);
+		for (unsigned i = 0; i < 4; i++) {
+
+			lampShader.loadModel(true, true, false, pointLightPositions[i], 0.2f);
+			lightCubes[i].draw();
+		}
 		lampShader.loadViewMatrix(defaultCamera);
 		lampShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 		lampShader.setVec4("Colour", lightColor);
 
-		lightCube.draw();
 
 
 		glfwSwapBuffers(window);

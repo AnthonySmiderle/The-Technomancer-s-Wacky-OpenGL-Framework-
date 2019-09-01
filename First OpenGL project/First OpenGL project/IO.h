@@ -6,7 +6,7 @@
 
 ///<this code is brought to you by the curtosy of Emilian>
 //loads the file as a string
-bool loadFileAsString(const std::string & file, std::string& output)
+static bool loadFileAsString(const std::string & file, std::string& output)
 {
 	//create the ifstream object
 	std::ifstream inStream(file.data());
