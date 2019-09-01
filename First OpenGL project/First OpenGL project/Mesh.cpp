@@ -15,7 +15,7 @@ namespace Pm {
 
 	bool Pm::Mesh::loadMesh(const std::string& path)
 	{
-	//	std::string inputString;
+		//	std::string inputString;
 		char inputString[128];
 
 		std::vector<glm::vec3> vertexData;
@@ -38,33 +38,32 @@ namespace Pm {
 
 			input.getline(inputString, 128);
 
-			
-			if (std::strstr(inputString, "v") != nullptr) {
+
+			if (inputString[0] == 'v' && inputString[1] == ' ') {
 				glm::vec3 vertData;
 
 				std::sscanf(inputString, "v %f %f %f", &vertData.x, &vertData.y, &vertData.z);
 				vertexData.push_back(vertData);
 			}
-			else if (std::strstr(inputString, "vt") != nullptr) {
+			else if (inputString[0] == 'v' && inputString[1] == 't') {
 				glm::vec2 texCoord;
 
 				std::sscanf(inputString, "vt %f %f", &texCoord.x, &texCoord.y);
 				textureData.push_back(texCoord);
 			}
-			else if (std::strstr(inputString, "vn") != nullptr) {
+			else if (inputString[0] == 'v' && inputString[1] == 'n') {
 				glm::vec3 normData;
 
 				std::sscanf(inputString, "vn %f %f %f", &normData.x, &normData.y, &normData.z);
 				normalData.push_back(normData);
 			}
-			else if (std::strstr(inputString, "f") != nullptr) {
+			else if (inputString[0] == 'f' && inputString[1] == ' ') {
 				FaceData faceData;
 
 				std::sscanf(inputString, "f %u/%u/%u %u/%u/%u %u/%u/%u",
 					&faceData.vertexData[0], &faceData.textureData[0], &faceData.normalData[0],
 					&faceData.vertexData[1], &faceData.textureData[1], &faceData.normalData[1],
-					&faceData.vertexData[2], &faceData.textureData[2], &faceData.normalData[2])
-					;
+					&faceData.vertexData[2], &faceData.textureData[2], &faceData.normalData[2]);
 				faces.push_back(faceData);
 			}
 			else
@@ -104,11 +103,11 @@ namespace Pm {
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * unPvertexData.size(), &unPvertexData[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBOverts);
+		glBindBuffer(GL_ARRAY_BUFFER, VBOuvs);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * unPtextureData.size(), &unPtextureData[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 2, (void*)0);
 
-		glBindBuffer(GL_ARRAY_BUFFER, VBOverts);
+		glBindBuffer(GL_ARRAY_BUFFER, VBOnormals);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * unPnormalData.size(), &unPnormalData[0], GL_STATIC_DRAW);
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
 

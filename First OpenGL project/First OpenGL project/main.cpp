@@ -116,10 +116,7 @@ int main() {
 		cubes.back().position = (glm::vec3(i + rand() % 5, rand() % 5 + 1, i + rand() % 5) *= -1);
 	}
 	///<do NOT put it in a draw function>
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, cubes.back().getTexture().load());
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, specularMap.load());
+	
 
 	std::vector<Pm::Cube> lightCubes;
 	for (unsigned i = 0; i < 4; i++)
@@ -146,6 +143,12 @@ int main() {
 
 	Pm::Mesh* dino = new Pm::Mesh();
 	dino->loadMesh("f16.obj");
+	unsigned cubeTexture = 0;
+	unsigned specularMapU = 0;
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, cubeTexture = cubes.back().getTexture().load());
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D,specularMapU = specularMap.load());
 	
 
 	while (!glfwWindowShouldClose(window))
@@ -169,11 +172,26 @@ int main() {
 
 		rotate += dt;
 
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, cubeTexture);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, specularMapU);
 		for (unsigned int i = 0; i < cubes.size(); i++)
 		{
 			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate * (i + 1) / 2);
 			cubes.back().draw();
 		}
+
+		
+
+		lightingShader.loadModel(true, true, true, glm::vec3(5,5,5), 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate);
+
+		dino->draw();
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		lightingShader.loadViewMatrix(defaultCamera);
 		lightingShader.loadProjectionMatrix(800.0f * 2, 600.0f * 2);
 		lightingShader.setInt("material.specular", 1);
@@ -211,6 +229,8 @@ int main() {
 		//for (auto x : cubes)
 		//	x.draw();
 
+
+		
 
 		/////////////////////////////////////////////////////////
 		glUseProgram(lampShader.getId());
