@@ -150,7 +150,8 @@ int main() {
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D,specularMapU = specularMap.load());
 	
-
+	glm::vec3 f16Pos = glm::vec3(0, 0, 0);
+	float f16Rotation = 0;
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
@@ -181,10 +182,33 @@ int main() {
 			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate * (i + 1) / 2);
 			cubes.back().draw();
 		}
-
 		
+		
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+			f16Pos.x += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+			f16Pos.x -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+			f16Pos.z -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+			f16Pos.z += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+			f16Pos.y += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+			f16Pos.y -= 0.05f;
 
-		lightingShader.loadModel(true, true, true, glm::vec3(5,5,5), 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate);
+		//rotating
+		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+			f16Rotation += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+			f16Rotation -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
+			f16Rotation -= 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+			f16Rotation += 0.05f;
+
+
+		lightingShader.loadModel(true, true, true, glm::vec3(5,5,5) + f16Pos, 0.9f, glm::vec3(1, 1, 1), f16Rotation);
 
 		dino->draw();
 
