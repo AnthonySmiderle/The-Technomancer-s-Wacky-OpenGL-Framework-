@@ -116,7 +116,7 @@ int main() {
 		cubes.back().position = (glm::vec3(i + rand() % 5, rand() % 5 + 1, i + rand() % 5) *= -1);
 	}
 	///<do NOT put it in a draw function>
-	
+
 
 	std::vector<Pm::Cube> lightCubes;
 	for (unsigned i = 0; i < 4; i++)
@@ -148,10 +148,12 @@ int main() {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cubeTexture = cubes.back().getTexture().load());
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D,specularMapU = specularMap.load());
-	
-	glm::vec3 f16Pos = glm::vec3(0, 0, 0);
+	glBindTexture(GL_TEXTURE_2D, specularMapU = specularMap.load());
+
+	glm::vec3 f16RotationV = glm::vec3(1, 1, 1);
+	glm::vec4 f16Pos = glm::vec4(0, 0, 0, 0);
 	float f16Rotation = 0;
+	glm::mat4 f16Model(1.0);
 	while (!glfwWindowShouldClose(window))
 	{
 		float currentFrame = glfwGetTime();
@@ -182,33 +184,44 @@ int main() {
 			lightingShader.loadModel(true, true, true, cubes[i].position, 0.9f, glm::vec3(1.0f, 0.3f, 0.5f), rotate * (i + 1) / 2);
 			cubes.back().draw();
 		}
-		
-		
-		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-			f16Pos.x += 0.05f;
+
+
+		if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+			f16Pos += f16Model[0] * 2.5f * dt;
+		}
 		if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-			f16Pos.x -= 0.05f;
+			f16Pos.x -= 0.005f;
 		if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-			f16Pos.z -= 0.05f;
+			f16Pos.z -= 0.005f;
 		if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-			f16Pos.z += 0.05f;
+			f16Pos.z += 0.005f;
 		if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-			f16Pos.y += 0.05f;
+			f16Pos.y += 0.005f;
 		if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-			f16Pos.y -= 0.05f;
+			f16Pos.y -= 0.005f;
 
 		//rotating
-		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
-			f16Rotation += 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
-			f16Rotation -= 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS)
-			f16Rotation -= 0.05f;
-		if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
-			f16Rotation += 0.05f;
+		if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS) {
+			f16RotationV += glm::vec3(0, 0, 1);
+			f16Rotation += 0.005f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS) {
+			f16RotationV -= glm::vec3(0, 0, 1);
+			f16Rotation -= 0.005f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+			f16RotationV -= glm::vec3(0, 1, 0);
+			f16Rotation -= 0.005f;
+		}
+		if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS) {
+			f16RotationV += glm::vec3(0, 1, 0);
+			f16Rotation += 0.005f;
+		}
 
 
-		lightingShader.loadModel(true, true, true, glm::vec3(5,5,5) + f16Pos, 0.9f, glm::vec3(1, 1, 1), f16Rotation);
+		f16Model = lightingShader.loadModel(true, true, true, glm::vec3(5,5,5) + glm::vec3(f16Pos), 0.9f, f16RotationV, f16Rotation);
+
+		//lightingShader.loadModel(f16Model);
 
 		dino->draw();
 
@@ -229,13 +242,13 @@ int main() {
 		lightingShader.setVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
 		for (unsigned i = 0; i < 4; i++) {
 
-			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].position" , pointLightPositions[i]);
-			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].ambient"  , 0.05f, 0.05f, 0.05f   );
-			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].diffuse"  , 0.8f , 0.8f , 0.8f    );
-			lightingShader.setVec3 ("pointLights[" + std::to_string(i) + "].specular" , 1.0f , 1.0f , 1.0f    );
-			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].constant" , 1.0f                  );
-			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].linear"   , 0.09                  );
-			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].quadratic", 0.032                 );
+			lightingShader.setVec3("pointLights[" + std::to_string(i) + "].position", pointLightPositions[i]);
+			lightingShader.setVec3("pointLights[" + std::to_string(i) + "].ambient", 0.05f, 0.05f, 0.05f);
+			lightingShader.setVec3("pointLights[" + std::to_string(i) + "].diffuse", 0.8f, 0.8f, 0.8f);
+			lightingShader.setVec3("pointLights[" + std::to_string(i) + "].specular", 1.0f, 1.0f, 1.0f);
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].constant", 1.0f);
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].linear", 0.09);
+			lightingShader.setFloat("pointLights[" + std::to_string(i) + "].quadratic", 0.032);
 		}
 
 		glm::vec3 lightColor = glm::vec4(2.0f, 2.0f, 2.0f, 1);
@@ -254,7 +267,7 @@ int main() {
 		//	x.draw();
 
 
-		
+
 
 		/////////////////////////////////////////////////////////
 		glUseProgram(lampShader.getId());

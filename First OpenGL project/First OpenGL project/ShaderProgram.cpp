@@ -72,17 +72,24 @@ namespace Pm {
 
 	}
 
-	void Shader::loadModel(bool transform,bool scale,bool rotate, const glm::vec3& translation,float scaleBy,const glm::vec3& rotateBy,float rotationAngle)
+	glm::mat4 Shader::loadModel(bool transform, bool scale, bool rotate, const glm::vec3& translation, float scaleBy, const glm::vec3& rotateBy, float rotationAngle)
 	{
 		glm::mat4 model = glm::mat4(1.0f);
 
 		if (transform)
 			model = glm::translate(model, translation);
-		if(scale)
+		if (scale)
 			model = glm::scale(model, glm::vec3(scaleBy));
 		if (rotate)
 			model = glm::rotate(model, rotationAngle, rotateBy);
-		
+
+		unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		return model;
+	}
+
+	void Shader::loadModel(const glm::mat4& model)
+	{
 		unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	}
@@ -120,19 +127,19 @@ namespace Pm {
 		}
 	}
 
-	void Shader::setVec3(const std::string& name, const glm::vec3&value) const {
+	void Shader::setVec3(const std::string& name, const glm::vec3& value) const {
 		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &value[0]);
 	}
-	void Shader::setVec4(const std::string & name, const glm::vec3 & value) const
+	void Shader::setVec4(const std::string& name, const glm::vec3& value) const
 	{
 		glUniform4fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &value[0]);
 
 	}
 	void Shader::setVec3(const std::string& name, const float x, const float y, const float z) const {
-		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &(glm::vec3(x,y,z))[0]);
+		glUniform3fv(glGetUniformLocation(shaderProgram, name.c_str()), 1, &(glm::vec3(x, y, z))[0]);
 	}
 	void Shader::setFloat(const std::string& name, const float& value) const {
-		glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()),value);
+		glUniform1f(glGetUniformLocation(shaderProgram, name.c_str()), value);
 	}
 	void Shader::setInt(const std::string& name, const int& value) const {
 		glUniform1i(glGetUniformLocation(shaderProgram, name.c_str()), value);
